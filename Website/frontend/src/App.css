@@ -1,0 +1,54 @@
+.allbody{
+    display: flex;
+    width: 100%;
+    height: calc(100vh - 3.5rem);
+    margin-top: 3.5rem;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+.home{
+    font-size: xx-large;
+    font-weight: bold;
+}
+.add-item:focus{
+    outline: none;
+}
+.search-item:focus{
+    outline: none;
+}
+.allbody.dashboard{
+    justify-content: flex-start;
+    flex-direction: column;
+}
+.search-box{
+    width: 85%;
+}
+.dashboard-search-form{
+    text-align: center;
+    margin-top: 2rem!important;
+    margin-bottom: 2rem!important;
+}
+.add-recipe{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 90%;
+    border: 2px solid #000;
+    padding: 4rem;
+    background-color: white;
+}
+.buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+form .recipe-form{
+    height: 100%;
+}
+.form-group .eye-button{
+    position: absolute;
+}
