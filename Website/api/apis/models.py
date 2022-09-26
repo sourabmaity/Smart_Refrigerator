@@ -25,7 +25,9 @@ class Recipe(models.Model):
     itemname = models.CharField(max_length=255)
     ingredient = models.TextField(default=None)
     process = models.TextField(default=None)
+    vegetables = models.TextField(default=None)
     videourl = models.URLField(default=None)
+    votes = models.IntegerField(default=0)
     def __str__(self):
         return str(self.itemname)
     

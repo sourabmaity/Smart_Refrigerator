@@ -1,0 +1,2 @@
+admin username = siteadmin
+admin password = admin

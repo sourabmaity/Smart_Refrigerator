@@ -1,14 +1,14 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from django.http import HttpResponse, JsonResponse
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,permission_classes
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.parsers import JSONParser
 from rest_framework import status
 from django.contrib.auth.models import User
 from apis.models import Fridge, Recipe,ValidUser
-from apis.serializers import UserSerializer
+from apis.serializers import UserSerializer,RecipeSerializer
+from rest_framework.permissions import IsAuthenticated
 import json
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -48,8 +48,7 @@ def register(request):
                 fname = None
                 lname = None
                 try:
-                    fname= person_name.split()[0]
-                    lname = person_name.split()[1]
+                    fname,lname= person_name.split()
                 except:
                     fname = person_name
                 newuser = User.objects.create_user(
@@ -72,27 +71,27 @@ def register(request):
     else:
         return Response({'error':'Password not matched'},status=status.HTTP_400_BAD_REQUEST)
 
-def addRecipe(recipename,ingredients,process):
+def addRecipe(username,recipename,ingredients=["Dummy","Ingredients"],process=["Dummy","Process"]):
     stringredients = "//".join(ingredients)
     strprocess = "//".join(process)
     recipe = Recipe.objects.filter(itemname=recipename)
-    if(recipe.count()==0):
-        create_recipe = Recipe(
-            itemname=str(recipename).lower(),
-            ingredient=stringredients,
-            process = strprocess
-        )
-        create_recipe.save()
-    else:
-        return Response(status=status.HTTP_400_BAD_REQUEST,content_type='application/json')
+    create_recipe = Recipe(
+        authorname = User.objects.get(username=username),
+        itemname=str(recipename).lower(),
+        ingredient=stringredients,
+        process = strprocess
+    )
+    create_recipe.save()
     return Response(status=status.HTTP_200_OK,content_type='application/json')
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def addrecipe(request):
-    print(request.user)
+    user = request.user
     reciepe = JSONParser().parse(request)
     print(reciepe)
-    getresponse = addRecipe(reciepe["recipename"],reciepe["indgredients"],reciepe["process"])
+    # reciepe["indgredients"],reciepe["process"]
+    getresponse = addRecipe(user,reciepe["recipename"])
     if(getresponse.status_code!=200):
         return Response({"error":"Recipe name alredy exist"},status=status.HTTP_400_BAD_REQUEST)
     context = {
@@ -108,3 +107,19 @@ def getUsername(request,email):
         return Response({"error":"User doesn't exists"},status=status.HTTP_400_BAD_REQUEST)
     serializer = UserSerializer(username,many=False)
     return Response(serializer.data,content_type=None)
+
+# @api_view(['POST','GET'])
+# def sum(request):
+#     if(request.method == 'POST'):
+#         value = JSONParser().parse(request)
+#         value["val"] +=1
+#         print(value)
+#     recipies = Recipe.objects.all()
+#     arr = []
+#     for i in recipies:
+#         dic = {
+#             'name':i.itemname
+#         }
+#         arr.append(dic)
+#     seraialized = RecipeSerializer(recipies,many=True)
+#     return Response(arr)
