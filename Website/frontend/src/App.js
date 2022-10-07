@@ -1,6 +1,6 @@
 import './App.css';
 import Header from './components/Header';
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
@@ -9,6 +9,9 @@ import PrivateRoute from './utils/PrivateRoute';
 import Dashboard from './components/Dashboard';
 import {AuthProvider} from './context/AuthContext';
 function App() {
+  useEffect(()=>{
+    localStorage.removeItem('steps')
+  },[])
   return (
     <>
         <Router>

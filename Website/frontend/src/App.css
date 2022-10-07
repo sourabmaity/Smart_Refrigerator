@@ -35,10 +35,11 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 90%;
-    height: 90%;
-    border: 2px solid #000;
-    padding: 4rem;
+    border-radius: 1rem;
+    padding: 2rem;
     background-color: white;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 .buttons{
     display: flex;
@@ -46,9 +47,46 @@
     justify-content: flex-end;
     gap: 1rem;
 }
-form .recipe-form{
+form.add-item-form{
     height: 100%;
 }
 .form-group .eye-button{
     position: absolute;
+}
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: white;
+    margin-bottom: 50px;
+    margin: 0;
+}
+.progress-bar div {
+    height: 100%;
+    background-color: purple;
+    transition: all 0.5s ease 0s;
+}
+.gap-process{
+    gap: 1rem;
+}
+.process{
+    overflow: auto;
+    height: 50vh;
+    text-align: center!important;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+.item-list{
+    height: 50vh;
+    overflow: auto;
+}
+.edit-save{
+    margin-bottom: 1rem!important;
+}
+.stepSize{
+    width: 80%;
+}
+.process-box{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }

@@ -8,7 +8,10 @@ import AddItem from './AddItem';
 export default function Dashboard() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    localStorage.removeItem('steps');
+  }
   const handleChange = React.useCallback((newValue) => {
     setOpen(newValue);
   }, []);
