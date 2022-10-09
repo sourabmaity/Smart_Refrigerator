@@ -29,6 +29,7 @@ def getData(request):
 
 @api_view(['POST'])
 def register(request):
+    
     person_data = JSONParser().parse(request)
     person_name = person_data["name"]
     person_username = person_data["username"]
