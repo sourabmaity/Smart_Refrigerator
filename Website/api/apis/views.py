@@ -30,7 +30,6 @@ def getData(request):
 @api_view(['POST'])
 def register(request):
     person_data = JSONParser().parse(request)
-    # print(person_data)
     person_name = person_data["name"]
     person_username = person_data["username"]
     person_email = person_data["email"]
@@ -71,29 +70,36 @@ def register(request):
     else:
         return Response({'error':'Password not matched'},status=status.HTTP_400_BAD_REQUEST)
 
-def addRecipe(username,recipename,ingredients=["Dummy","Ingredients"],process=["Dummy","Process"]):
-    stringredients = "//".join(ingredients)
-    strprocess = "//".join(process)
-    recipe = Recipe.objects.filter(itemname=recipename)
-    create_recipe = Recipe(
-        authorname = User.objects.get(username=username),
-        itemname=str(recipename).lower(),
-        ingredient=stringredients,
-        process = strprocess
-    )
-    create_recipe.save()
-    return Response(status=status.HTTP_200_OK,content_type='application/json')
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def addrecipe(request):
-    user = request.user
     reciepe = JSONParser().parse(request)
-    print(reciepe)
+    data = json.dumps(reciepe,indent=4)
+    print(data)
+    username = request.user
+    recipename = reciepe['recipe_name']
+    ingredients = reciepe['ingredients']
+    stringredients="//".join(ingredients)
+    recipe_process = reciepe['recipe_process']
+    strprocess = "//".join(recipe_process)
+    vegetable = reciepe['vegetables']
+    strvegetable = "//".join(vegetable)
+    vurl=reciepe['video_link']
+    
+    create_recipe = Recipe(
+        authorname=User.objects.get(username=username),
+        itemname=recipename,
+        ingredient=stringredients,
+        process=strprocess,
+        vegetables=strvegetable,
+        videourl=vurl
+    )
+    create_recipe.save()
     # reciepe["indgredients"],reciepe["process"]
-    getresponse = addRecipe(user,reciepe["recipename"])
-    if(getresponse.status_code!=200):
-        return Response({"error":"Recipe name alredy exist"},status=status.HTTP_400_BAD_REQUEST)
+    # getresponse = addRecipe(user,reciepe["recipename"])
+    # if(getresponse.status_code!=200):
+    #     return Response({"error":"Recipe name alredy exist"},status=status.HTTP_400_BAD_REQUEST)
     context = {
         "success":"Recipe Added"
     }
@@ -107,19 +113,3 @@ def getUsername(request,email):
         return Response({"error":"User doesn't exists"},status=status.HTTP_400_BAD_REQUEST)
     serializer = UserSerializer(username,many=False)
     return Response(serializer.data,content_type=None)
-
-# @api_view(['POST','GET'])
-# def sum(request):
-#     if(request.method == 'POST'):
-#         value = JSONParser().parse(request)
-#         value["val"] +=1
-#         print(value)
-#     recipies = Recipe.objects.all()
-#     arr = []
-#     for i in recipies:
-#         dic = {
-#             'name':i.itemname
-#         }
-#         arr.append(dic)
-#     seraialized = RecipeSerializer(recipies,many=True)
-#     return Response(arr)
