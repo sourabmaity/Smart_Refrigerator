@@ -30,7 +30,7 @@ export default function SignUp() {
             alert("Fill these place");
         }else{
             // console.log(name,username,email,fpassword,spassword);
-            const result = await fetch('http://127.0.0.1:8000/api/user/register/', {
+            const result = await fetch('https://smrtfrze.herokuapp.com/api/user/register/', {
                 method: "post",
                 credentials:'same-origin',
                 body: JSON.stringify({ name,username, email,fpassword,spassword }),

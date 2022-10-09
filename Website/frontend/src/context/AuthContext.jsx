@@ -14,7 +14,7 @@ export const AuthProvider = ({children})=>{
     let loginUser = async (e)=>{
         e.preventDefault();
         // console.log("Form submitted");
-        let username_url = 'http://127.0.0.1:8000/api/getusername/'+e.target.email.value;
+        let username_url = 'https://smrtfrze.herokuapp.com/api/getusername/'+e.target.email.value;
         let user_name = await fetch(username_url);
         const raw = await user_name.json();
         if(await user_name.status === 400){
@@ -27,7 +27,7 @@ export const AuthProvider = ({children})=>{
                 </div>
             );
         }else{
-            let response = await fetch('http://127.0.0.1:8000/api/token/',{
+            let response = await fetch('https://smrtfrze.herokuapp.com/api/token/',{
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'
@@ -62,7 +62,7 @@ export const AuthProvider = ({children})=>{
     let updateToken = async ()=>{
         // console.log("2");
         // console.log(authToken)
-        let response = await fetch('http://127.0.0.1:8000/api/token/refresh/',{
+        let response = await fetch('https://smrtfrze.herokuapp.com/api/token/refresh/',{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
