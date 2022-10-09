@@ -97,10 +97,6 @@ def addrecipe(request):
         videourl=vurl
     )
     create_recipe.save()
-    # reciepe["indgredients"],reciepe["process"]
-    # getresponse = addRecipe(user,reciepe["recipename"])
-    # if(getresponse.status_code!=200):
-    #     return Response({"error":"Recipe name alredy exist"},status=status.HTTP_400_BAD_REQUEST)
     context = {
         "success":"Recipe Added"
     }
