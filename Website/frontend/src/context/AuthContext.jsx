@@ -13,7 +13,6 @@ export const AuthProvider = ({children})=>{
     const [customalert,setAlert] = useState('');
     let loginUser = async (e)=>{
         e.preventDefault();
-        // console.log("Form submitted");
         let username_url = 'https://smrtfrze.herokuapp.com/api/getusername/'+e.target.email.value;
         let user_name = await fetch(username_url);
         const raw = await user_name.json();
@@ -60,14 +59,12 @@ export const AuthProvider = ({children})=>{
     }
 
     let updateToken = async ()=>{
-        // console.log("2");
-        // console.log(authToken)
         let response = await fetch('https://smrtfrze.herokuapp.com/api/token/refresh/',{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
             },
-            body:JSON.stringify({'refresh':authToken.refresh})
+            body:JSON.stringify({'refresh':authToken?.refresh})
         })
         let data = await response.json()
         
@@ -77,7 +74,9 @@ export const AuthProvider = ({children})=>{
             localStorage.setItem("Authtoken",JSON.stringify(data))
         }else{
             logoutUser();
-            //console.log(data)
+        }
+        if(loading){
+            setLoading(false);
         }
     }
     const contextData = {
@@ -88,6 +87,9 @@ export const AuthProvider = ({children})=>{
         authToken:authToken
     }
     useEffect(()=>{
+        if(loading){
+            updateToken()
+        }
         let fiveMinutes = 1000*60*5;
         let interval = setInterval(() => {
             if(authToken){
@@ -98,7 +100,7 @@ export const AuthProvider = ({children})=>{
     },[authToken,loading])
     return (
         <AuthContext.Provider value={contextData}>
-            {children}
+            {loading?null:children}
         </AuthContext.Provider>
     )
 }
