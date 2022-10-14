@@ -100,6 +100,52 @@ def addrecipe(request):
         "success":"Recipe Added"
     }
     return Response(context,status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_dashboard(request):
+    username = request.user
+    recipies = Recipe.objects.filter(authorname=username)
+    results=[]
+    for recipie in recipies:
+        temp={}
+        temp["id"]=str(recipie.id)
+        temp["recipe_name"]=str(recipie.itemname)
+        temp["recipe_process"]=str(recipie.process).split("//")
+        temp["ingredient"]=str(recipie.ingredient).split("//")
+        temp["vegetables"]=str(recipie.vegetables).split("//")
+        if len(str(recipie.videourl))>0:
+            temp["videourl"] = str(recipie.videourl)
+        temp["votes"] = str(recipie.votes)
+        results.append(temp)
+    if(len(results)==0):
+        return Response({"alert":"Seriously? Without adding any recipe you are checking recipies ?LOL😂"}, status=status.HTTP_200_OK)
+    return Response(results, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def recipe_delete(request,id):
+    print(request.user)
+    print(id)
+    recipe = Recipe.objects.get(id=id)
+    recipe.delete()
+    username = request.user
+    recipies = Recipe.objects.filter(authorname=username)
+    results=[]
+    for recipie in recipies:
+        temp={}
+        temp["id"]=str(recipie.id)
+        temp["recipe_name"]=str(recipie.itemname)
+        temp["recipe_process"]=str(recipie.process).split("//")
+        temp["ingredient"]=str(recipie.ingredient).split("//")
+        temp["vegetables"]=str(recipie.vegetables).split("//")
+        if len(str(recipie.videourl))>0:
+            temp["videourl"] = str(recipie.videourl)
+        temp["votes"] = str(recipie.votes)
+        results.append(temp)
+    if(len(results)==0):
+        return Response({"alert":"Seriously? Without adding any recipe you are checking recipies ?LOL😂"}, status=status.HTTP_200_OK)
+    return Response(results, status=status.HTTP_200_OK)
     
 @api_view(['GET'])
 def getUsername(request,email):
