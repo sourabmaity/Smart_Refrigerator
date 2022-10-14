@@ -96,12 +96,51 @@ form.add-item-form{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    text-align: left;
 }
 
 .checked-vegetables{
     height: 50vh;
     overflow: auto;
     display: flex;
+    flex-direction: column;
+}
+.veg{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+.recipebody{
+    display: flex;
+    width: 100%;
+    margin-top: 3.5rem;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: center;
+}
+.loader{
+    margin-top: 2rem;
+    text-align: center;
+}
+.recipecard{
+    display: flex;
+    margin: 2rem;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.my-recipe{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    border-radius: 1rem;
+    padding: 2rem;
+    background-color: white;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    gap: 2rem;
 }

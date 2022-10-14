@@ -29,7 +29,7 @@ export default function Ingredient({ formData, setFormData }) {
       <Button fullWidth className='add-item' color='success' variant="contained" onClick={saveIngredient}>Add</Button>
       <List className='item-list'>
         {formData.ingredients.length!==0?formData.ingredients.map((item,index)=>{
-            return <ShowIngredients formData={formData} setFormData={setFormData} item={item} index={index}/>
+            return <ShowIngredients formData={formData} key={index} setFormData={setFormData} item={item} index={index}/>
         }):<li className='text-center'>Ingredient doesn't exist</li>}
       </List>
     </div>

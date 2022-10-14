@@ -21,6 +21,9 @@ export default function Header() {
                             <li className="nav-item">
                                 <Link className="nav-link" to="/dashboard">Dashboard</Link>
                             </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/myrecipies">My Recipies</Link>
+                            </li>
                             <li className="nav-item" style={{"margin": "auto"}}>
                                 <Button fullWidth className='add-item' variant="contained" size="small" onClick={logoutUser} color="error">LogOut</Button>
                             </li>

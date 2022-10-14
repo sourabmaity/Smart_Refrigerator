@@ -5,8 +5,10 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import AddItem from './AddItem';
+import { useState } from 'react';
 export default function Dashboard() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [Alert,setAlert] = useState('');
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
@@ -17,11 +19,12 @@ export default function Dashboard() {
   }, []);
   return (
     <div className='allbody dashboard'>
+        {Alert}
         <Button className='add-item' onClick={handleOpen} variant="contained">Add Recipe</Button>
         <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
           <Box >
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              <AddItem Open={handleChange}/>
+              <AddItem setOpen={setOpen} setAlert={setAlert} open={open} Open={handleChange}/>
             </Typography>
           </Box>
         </Modal>

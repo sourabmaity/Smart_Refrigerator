@@ -8,6 +8,7 @@ import Home from './components/Home';
 import PrivateRoute from './utils/PrivateRoute';
 import Dashboard from './components/Dashboard';
 import {AuthProvider} from './context/AuthContext';
+import Myrecipies from './components/Myrecipies';
 function App() {
   useEffect(()=>{
     localStorage.removeItem('steps')
@@ -19,7 +20,8 @@ function App() {
             <Header />
             <Routes>
                 <Route exact path="/" element={<Home />} />
-                <Route exact path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>}/>
+                <Route exact path="/dashboard" element={<PrivateRoute child={<Dashboard />}><Dashboard /></PrivateRoute>}/>
+                <Route exact path="/myrecipies" element={<PrivateRoute child={<Myrecipies />}><Myrecipies /></PrivateRoute>}/>
                 <Route exact path="/signup" element={<SignUp />} />
                 <Route exact path="/signin" element={<SignIn />} />
 

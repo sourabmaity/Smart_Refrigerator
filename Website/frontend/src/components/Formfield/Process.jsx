@@ -11,6 +11,7 @@ export default function Process({ formData, setFormData }) {
   }
   const [steps,setSteps] = useState(fsteps);
   const [edit,setEdit] = useState(0);
+  const [once,setOnce]=useState(true);
   const addStep = (e)=>{
     e.preventDefault();
     var arr = steps
@@ -18,6 +19,9 @@ export default function Process({ formData, setFormData }) {
     setSteps([...arr]);
     localStorage.setItem("steps",JSON.stringify(steps));
     setEdit(1)
+    if(once===false){
+      setOnce(true);
+    }
   }
 
   const toEditSave = (e)=>{
@@ -36,7 +40,7 @@ export default function Process({ formData, setFormData }) {
       </div>
       <div className="process">
         {steps.length!==0?steps.map((item,index)=>{
-              return <ShowProcess editable={edit} formData={formData} setFormData={setFormData} steps={steps} setSteps={setSteps} item={item} index={index}/>
+              return <ShowProcess editable={edit} formData={formData} setFormData={setFormData} steps={steps} setSteps={setSteps} item={item} index={index} once={once} setOnce={setOnce}/>
         }):<p className='text-center'>Process doesn't exist</p>}
       </div>
       <div className="d-flex gap-process edit-save justify-content-center">
