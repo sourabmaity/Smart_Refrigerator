@@ -144,3 +144,15 @@ form.add-item-form{
     margin-bottom: 1rem;
     gap: 2rem;
 }
+
+.search_result{
+    width: 85%;
+    background: #958cf4;
+    margin: auto;
+}
+.search-item{
+    position: absolute!important;
+    right: calc(100% - 92.5%);
+    margin: auto;
+    top: calc(7.9rem);
+}

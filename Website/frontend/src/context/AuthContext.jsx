@@ -1,4 +1,4 @@
-import { createContext,useState,useEffect} from "react";
+import { createContext,useState,useEffect,useCallback} from "react";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 const AuthContext = createContext()
@@ -51,14 +51,14 @@ export const AuthProvider = ({children})=>{
             }
         }
     }
-    let logoutUser = ()=>{
+    let logoutUser = useCallback(()=>{
         setAuthToken(null)
         setUsername(null)
         localStorage.removeItem("Authtoken");
         navigate("/signin")
-    }
+    },[navigate])
 
-    let updateToken = async ()=>{
+    let updateToken = useCallback(async ()=>{
         let response = await fetch('https://smrtfrze.herokuapp.com/api/token/refresh/',{
             method:'POST',
             headers:{
@@ -78,7 +78,7 @@ export const AuthProvider = ({children})=>{
         if(loading){
             setLoading(false);
         }
-    }
+    },[authToken,loading,logoutUser])
     const contextData = {
         loginUser:loginUser,
         logoutUser:logoutUser,
@@ -97,7 +97,7 @@ export const AuthProvider = ({children})=>{
             }
         },fiveMinutes);
         return ()=>clearInterval(interval)
-    },[authToken,loading])
+    },[updateToken,authToken,loading])
     return (
         <AuthContext.Provider value={contextData}>
             {loading?null:children}
