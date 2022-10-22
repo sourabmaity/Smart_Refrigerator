@@ -12,6 +12,7 @@ urlpatterns = [
     path('user/register/',views.register, name='user_register'),
     path('addrecipe/',views.addrecipe,name='add_recipe'),
     path('getuserdashboard/',views.get_user_dashboard,name='get_user_dashboard'),
+    path('gosearch/',views.gosearch,name='go_search'),
     path('recipedelete/<str:id>',views.recipe_delete,name='recipe_delete'),
     path('getusername/<str:email>',views.getUsername,name='get_username'),
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),

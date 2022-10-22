@@ -147,6 +147,68 @@ def recipe_delete(request,id):
         return Response({"alert":"Seriously? Without adding any recipe you are checking recipies ?LOL😂"}, status=status.HTTP_200_OK)
     return Response(results, status=status.HTTP_200_OK)
     
+
+def search_list(item_list,search_item):
+    lst=[]
+    class TrieNode():
+        def __init__(self):
+            self.children = {}
+            self.last = False
+    class Trie():
+        def __init__(self):
+            self.root = TrieNode()
+        def formTrie(self, keys):
+            for key in keys:
+                self.insert(key)
+        def insert(self, key):
+            node = self.root
+            for a in key:
+                if not node.children.get(a):
+                    node.children[a] = TrieNode()
+                node = node.children[a]
+            node.last = True
+        def suggestionsRec(self, node, word):            
+            if node.last:
+                lst.append(word)
+            for a, n in node.children.items():
+                self.suggestionsRec(n, word + a)
+        def printAutoSuggestions(self, key):
+            node = self.root
+            for a in key:
+                if not node.children.get(a):
+                    return 0
+                node = node.children[a]
+            if not node.children:
+                return -1
+            self.suggestionsRec(node, key)
+            return 1
+    t = Trie()
+    t.formTrie(item_list)
+    comp = t.printAutoSuggestions(search_item)
+    if comp == -1:
+        return -1
+    elif comp == 0:
+        return 0
+    
+    return lst
+
+@api_view(['GET','POST'])
+@permission_classes([IsAuthenticated])
+def gosearch(request):
+    username = request.user
+    item = JSONParser().parse(request)
+    recipe_lists = list(Recipe.objects.all().exclude(authorname=username).values('itemname'))
+    recipe_name_lists=[]
+    for recipe in recipe_lists:
+        recipe_name_lists.append(recipe["itemname"].capitalize())
+    result = search_list(recipe_name_lists,str(item["item"]).capitalize())
+    # print(result)
+    if(result!=0 and result!=-1):
+        result = result[:5]
+    if(result==-1 or result==0):
+        return Response({"notfound":"No recipe found"},status=status.HTTP_200_OK)
+    return Response({"search_result":result},status=status.HTTP_200_OK)
+
 @api_view(['GET'])
 def getUsername(request,email):
     try:

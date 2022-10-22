@@ -29,5 +29,5 @@ class Recipe(models.Model):
     videourl = models.URLField(default=None)
     votes = models.IntegerField(default=0)
     def __str__(self):
-        return str(self.itemname)
+        return str(self.itemname)+" ("+str(self.authorname)+")"
     
