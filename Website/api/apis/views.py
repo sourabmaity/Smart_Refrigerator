@@ -178,16 +178,12 @@ def search_list(item_list,search_item):
                 if not node.children.get(a):
                     return 0
                 node = node.children[a]
-            if not node.children:
-                return -1
             self.suggestionsRec(node, key)
             return 1
     t = Trie()
     t.formTrie(item_list)
     comp = t.printAutoSuggestions(search_item)
-    if comp == -1:
-        return -1
-    elif comp == 0:
+    if comp == 0:
         return 0
     
     return lst
@@ -201,11 +197,13 @@ def gosearch(request):
     recipe_name_lists=[]
     for recipe in recipe_lists:
         recipe_name_lists.append(recipe["itemname"].capitalize())
+    # print(str(item))
+    # print(recipe_name_lists)
     result = search_list(recipe_name_lists,str(item["item"]).capitalize())
     # print(result)
-    if(result!=0 and result!=-1):
+    if(result!=0):
         result = result[:5]
-    if(result==-1 or result==0):
+    if(result==0):
         return Response({"notfound":"No recipe found"},status=status.HTTP_200_OK)
     return Response({"search_result":result},status=status.HTTP_200_OK)
 
